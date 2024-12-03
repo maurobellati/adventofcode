@@ -34,17 +34,14 @@ public static partial class StringExtensions
 
     public static bool ContainsInvariant(this string input, string value) => input.Contains(value, StringComparison.InvariantCulture);
 
-    public static IEnumerable<string> Extract(this string input, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern) =>
-        Regex.Matches(input, pattern).Select(m => m.Value);
-
-    public static IEnumerable<string> Extract(this string input, Regex regex) =>
-        regex.Matches(input).Select(m => m.Value);
-
-    public static IEnumerable<T> Extract<T>(this string input, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern, Func<string, T> parser) =>
-        Extract(input, pattern).Select(parser);
+    public static IEnumerable<T> Extract<T>(this string input, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern, Func<Match, T> parser) =>
+        Regex.Matches(input, pattern).Select(parser);
 
     public static IEnumerable<T> Extract<T>(this string input, Regex regex, Func<string, T> parser) =>
-        Extract(input, regex).Select(parser);
+        regex.Matches(input).Select(m => parser(m.Value));
+
+    public static IEnumerable<T> Extract<T>(this string input, Regex regex, Func<Match, T> parser) =>
+        regex.Matches(input).Select(parser);
 
     public static IEnumerable<int> ExtractInts(this string input) => input.Extract(NumberRegex(), int.Parse);
 
