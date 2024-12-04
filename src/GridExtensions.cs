@@ -18,4 +18,102 @@ public static class GridExtensions
             }
         }
     }
+
+    public static List<List<T>> Rotate45<T>(this Grid<T> grid, Rotation rotation) =>
+        rotation switch
+        {
+            Rotation.Clockwise => grid.Rotate45(),
+            Rotation.CounterClockwise => grid.RotateMinus45(),
+            _ => throw new ArgumentOutOfRangeException(nameof(rotation))
+        };
+
+    public static List<List<T>> Rotate45<T>(this Grid<T> grid)
+    {
+        var rows = grid.Rows;
+        var cols = grid.Cols;
+        var result = new List<List<T>>();
+
+        for (var sum = 0; sum < rows + cols - 1; sum++)
+        {
+            var diagonal = new List<T>();
+            for (var row = 0; row <= sum; row++)
+            {
+                var col = sum - row;
+                if (row < rows && col < cols)
+                {
+                    diagonal.Add(grid.Items[row][col]);
+                }
+            }
+
+            result.Add(diagonal);
+        }
+
+        return result;
+    }
+
+    public static Grid<T> Rotate90<T>(this Grid<T> grid, Rotation rotation) =>
+        rotation switch
+        {
+            Rotation.Clockwise => grid.Rotate90(),
+            Rotation.CounterClockwise => grid.RotateMinus90(),
+            _ => throw new ArgumentOutOfRangeException(nameof(rotation))
+        };
+
+    public static Grid<T> Rotate90<T>(this Grid<T> grid)
+    {
+        var rotatedItems = new List<List<T>>();
+        for (var col = 0; col < grid.Cols; col++)
+        {
+            var rotatedRow = new List<T>();
+            for (var row = grid.Rows - 1; row >= 0; row--)
+            {
+                rotatedRow.Add(grid.Items[row][col]);
+            }
+
+            rotatedItems.Add(rotatedRow);
+        }
+
+        return new(rotatedItems);
+    }
+
+    public static List<List<T>> RotateMinus45<T>(this Grid<T> grid)
+    {
+        var rows = grid.Rows;
+        var cols = grid.Cols;
+        var result = new List<List<T>>();
+
+        for (var diff = 1 - rows; diff < cols; diff++)
+        {
+            var diagonal = new List<T>();
+            for (var row = 0; row < rows; row++)
+            {
+                var col = row + diff;
+                if (col >= 0 && col < cols)
+                {
+                    diagonal.Add(grid.Items[row][col]);
+                }
+            }
+
+            result.Add(diagonal);
+        }
+
+        return result;
+    }
+
+    public static Grid<T> RotateMinus90<T>(this Grid<T> grid)
+    {
+        var rotatedItems = new List<List<T>>();
+        for (var col = grid.Cols - 1; col >= 0; col--)
+        {
+            var rotatedRow = new List<T>();
+            for (var row = 0; row < grid.Rows; row++)
+            {
+                rotatedRow.Add(grid.Items[row][col]);
+            }
+
+            rotatedItems.Add(rotatedRow);
+        }
+
+        return new(rotatedItems);
+    }
 }

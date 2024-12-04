@@ -24,6 +24,8 @@ public class Grid<T>
     public virtual GridEntry<T> EntryAt(Cell cell) => new(cell, ValueAt(cell));
 
     public virtual T ValueAt(Cell cell) => Items[cell.Row][cell.Col];
+
+    public virtual T ValueAt(int row, int col) => Items[row][col];
 }
 
 public static class GridFactory
