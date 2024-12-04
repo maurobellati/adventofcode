@@ -57,7 +57,7 @@ public class Y2023Day21 : Solver
             var frontier = frontierByStep[i - 1];
 
             HashSet<Cell> discovered = [];
-            foreach (var candidate in frontier.SelectMany(it => it.MoveMany(Direction.GetAll())))
+            foreach (var candidate in frontier.SelectMany(it => it.MoveMany(Direction.NSEW)))
             {
                 var cell = candidate.Mod(grid);
                 if (grid.ValueAt(cell) == Rock)

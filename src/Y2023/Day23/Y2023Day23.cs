@@ -28,7 +28,7 @@ public class Y2023Day23 : Solver
     public object PartTwo(List<string> input) => SolveWith(input, BuildGetCandidates(false));
 
     private static Func<Cell, Path, Grid<char>, IEnumerable<Cell>> BuildGetCandidates(bool considerSlope) =>
-        (cell, path, grid) => Direction.GetAll()
+        (cell, path, grid) => Direction.NSEW
             .Select(
                 direction => new
                 {

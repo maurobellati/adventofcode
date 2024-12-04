@@ -75,8 +75,8 @@ public class Y2023Day17 : Solver
 
     private static IEnumerable<Direction> GetAllowedDirections(Node node, MinMax sameDirectionMinMaxSteps) =>
         node.History is null
-            ? Direction.GetAll()
-            : Direction.GetAll()
+            ? Direction.NSEW
+            : Direction.NSEW
                 .Where(d => d != node.History.Direction.Opposite()) // disallow going back
                 .Where(d => d == node.History.Direction || node.History.Count >= sameDirectionMinMaxSteps.Min) // disallow short runs in same direction
                 .Where(d => d != node.History.Direction || node.History.Count < sameDirectionMinMaxSteps.Max); // disallow long runs in same direction

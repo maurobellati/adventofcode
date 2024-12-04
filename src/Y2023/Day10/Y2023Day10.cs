@@ -73,7 +73,7 @@ public class Y2023Day10 : Solver
     private static List<Segment> FindLoop(Grid<char> grid, Cell start)
     {
         // find the first segment that is not a dead end
-        var startSegment = Direction.GetAll()
+        var startSegment = Direction.NSEW
             .Select(direction => new Segment(start, 'S', direction))
             .First(segment => NextSegment(grid, segment) != null);
 
@@ -103,7 +103,7 @@ public class Y2023Day10 : Solver
         while (floodFrontier.IsNotEmpty())
         {
             var currentCell = floodFrontier.Dequeue();
-            foreach (var nextCell in currentCell.MoveMany(Direction.GetAll()))
+            foreach (var nextCell in currentCell.MoveMany(Direction.NSEW))
             {
                 if (visitedCells.Contains(nextCell) || loop.Contains(nextCell))
                 {
