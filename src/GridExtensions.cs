@@ -61,7 +61,7 @@ public static class GridExtensions
 
     public static Grid<T> Rotate90<T>(this Grid<T> grid)
     {
-        var rotatedItems = new List<List<T>>();
+        var result = new List<List<T>>();
         for (var col = 0; col < grid.Cols; col++)
         {
             var rotatedRow = new List<T>();
@@ -70,10 +70,10 @@ public static class GridExtensions
                 rotatedRow.Add(grid.Items[row][col]);
             }
 
-            rotatedItems.Add(rotatedRow);
+            result.Add(rotatedRow);
         }
 
-        return new(rotatedItems);
+        return new(result);
     }
 
     public static List<List<T>> RotateMinus45<T>(this Grid<T> grid)
@@ -102,7 +102,7 @@ public static class GridExtensions
 
     public static Grid<T> RotateMinus90<T>(this Grid<T> grid)
     {
-        var rotatedItems = new List<List<T>>();
+        var result = new List<List<T>>();
         for (var col = grid.Cols - 1; col >= 0; col--)
         {
             var rotatedRow = new List<T>();
@@ -111,9 +111,9 @@ public static class GridExtensions
                 rotatedRow.Add(grid.Items[row][col]);
             }
 
-            rotatedItems.Add(rotatedRow);
+            result.Add(rotatedRow);
         }
 
-        return new(rotatedItems);
+        return new(result);
     }
 }

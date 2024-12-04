@@ -25,6 +25,8 @@ public class Grid<T>
 
     public virtual T ValueAt(Cell cell) => Items[cell.Row][cell.Col];
 
+    public virtual T? ValueAtOrDefault(Cell cell) => this.Contains(cell) ? ValueAt(cell) : default;
+
     public virtual T ValueAt(int row, int col) => Items[row][col];
 }
 
