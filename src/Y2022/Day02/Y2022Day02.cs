@@ -2,106 +2,105 @@ namespace AdventOfCode.Y2022.Day02;
 
 using System.Diagnostics;
 using AdventOfCodeDotNet;
-using Moves = (string Theirs, string Ours);
-using MoveAndOutcome = (string Theirs, int Outcome);
-using FullMove = (string Theirs, string Ours, int Outcome);
+using Match = (Y2022Day02.WithDecoding.Move Elf, Y2022Day02.WithDecoding.Move Human);
 
 public class Y2022Day02 : Solver
 {
-    private const int Rock = 1;
-    private const int Paper = 2;
-    private const int Scissors = 3;
-
-    private const int LosePoints = 0;
-    private const int DrawPoints = 3;
-    private const int WinPoints = 6;
-
-    private static readonly Dictionary<string, int> Codes = new()
-    {
-        ["A"] = Rock,
-        ["B"] = Paper,
-        ["C"] = Scissors,
-        ["X"] = Rock,
-        ["Y"] = Paper,
-        ["Z"] = Scissors
-    };
-
-
-    private static readonly Dictionary<Moves, int> MovesOutcomes = new()
-    {
-        [new("A", "X")] = DrawPoints,
-        [new("A", "Y")] = WinPoints,
-        [new("A", "Z")] = LosePoints,
-        [new("B", "X")] = LosePoints,
-        [new("B", "Y")] = DrawPoints,
-        [new("B", "Z")] = WinPoints,
-        [new("C", "X")] = WinPoints,
-        [new("C", "Y")] = LosePoints,
-        [new("C", "Z")] = DrawPoints
-    };
-
-    // private Hand RockPaper = (Rock, Paper);
-    // private Hand PaperScissors = (Paper, Scissors);
-    // private Hand ScissorsRock = (Scissors, Rock);
-    // private static readonly List<Moves> Wins =
-    // [
-    //     (Rock, Paper),
-    //     (Paper, Scissors),
-    //     (Scissors, Rock)
-    // ];
-
     public object PartOne(List<string> input)
     {
-        List<int> solutions = [WithEverythingHardcoded.PartOne(input)];
+        List<int> solutions = [WithEverythingHardcoded.PartOne(input), WithDecoding.PartOne(input)];
         Debug.Assert(solutions.Distinct().Count() == 1);
         return solutions.First();
     }
 
-    // input.Select(it => Scores[it]).Sum();
     public object PartTwo(List<string> input)
     {
-        List<int> solutions = [WithEverythingHardcoded.PartTwo(input)];
+        List<int> solutions = [WithEverythingHardcoded.PartTwo(input), WithDecoding.PartTwo(input)];
         Debug.Assert(solutions.Distinct().Count() == 1);
         return solutions.First();
     }
 
-    private static MoveAndOutcome ParseMoveAndOutcome(string line)
+    internal static class WithDecoding
     {
-        var outcome = line.After(' ') switch
+        private static readonly Dictionary<Move, Move> Winners = new()
         {
-            "X" => LosePoints,
-            "Y" => DrawPoints,
-            "Z" => WinPoints,
-            _ => throw new ArgumentException($"Invalid outcome for {line}")
+            [Move.Rock] = Move.Paper,
+            [Move.Paper] = Move.Scissors,
+            [Move.Scissors] = Move.Rock
         };
-        return new(line.Before(' '), outcome);
-    }
 
-    private static Moves ParseMoves(string line) => new(line.Before(' '), line.After(' '));
-
-    private FullMove InferOurMove(MoveAndOutcome input)
-    {
-        var ours = input.Theirs switch
+        private static readonly Dictionary<Move, Move> Losers = new()
         {
-            "X" => "B",
-            "Y" => "C",
-            "Z" => "A",
-            _ => throw new ArgumentException($"Invalid move for {input}")
+            [Move.Rock] = Move.Scissors,
+            [Move.Paper] = Move.Rock,
+            [Move.Scissors] = Move.Paper
         };
-        return new(input.Theirs, ours, input.Outcome);
+
+        public static int PartOne(List<string> input)
+        {
+            return input.Select(line => new Match(ElfMove(line[0]), HumanMove(line[2]))).Select(CalculateScore).Sum();
+
+            Move HumanMove(char @char) =>
+                @char switch
+                {
+                    'X' => Move.Rock,
+                    'Y' => Move.Paper,
+                    'Z' => Move.Scissors,
+                    _ => throw new InvalidOperationException()
+                };
+        }
+
+        public static int PartTwo(List<string> input)
+        {
+            return input.Select(line => new Match(ElfMove(line[0]), HumanMove(ElfMove(line[0]), line[2]))).Select(CalculateScore).Sum();
+
+            Move HumanMove(Move elf, char @char) =>
+                @char switch
+                {
+                    'X' => Losers[elf],
+                    'Y' => elf,
+                    'Z' => Winners[elf],
+                    _ => throw new InvalidOperationException()
+                };
+        }
+
+        private static int CalculateScore(Match match)
+        {
+            // the score for the shape you selected (1 for Rock, 2 for Paper, and 3 for Scissors)
+            var selectedScore = (int)match.Human;
+            // the score for the outcome of the round (0 if you lost, 3 if the round was a draw, and 6 if you won).
+            var outcomeScore = (int)GetOutcome(match);
+            return selectedScore + outcomeScore;
+        }
+
+        private static Move ElfMove(char input) => input switch
+        {
+            'A' => Move.Rock,
+            'B' => Move.Paper,
+            'C' => Move.Scissors,
+            _ => throw new InvalidOperationException()
+        };
+
+        private static Outcome GetOutcome(Match match) =>
+            match.Human == match.Elf ? Outcome.Draw :
+            match.Human == Winners[match.Elf] ? Outcome.Win :
+            match.Human == Losers[match.Elf] ? Outcome.Lose :
+            throw new InvalidOperationException();
+
+        internal enum Move
+        {
+            Rock = 1,
+            Paper = 2,
+            Scissors = 3
+        }
+
+        private enum Outcome
+        {
+            Lose = 0,
+            Draw = 3,
+            Win = 6
+        }
     }
-
-    private FullMove InferOutcome(Moves moves) => new(moves.Theirs, moves.Ours, MovesOutcomes[moves]);
-
-    // private int Score(Moves moves) => Codes[moves.Ours] + MovesOutcomes[moves];
-
-    // private int Score2(MoveAndResult moveAndResult) => Codes[moves.Ours] + MovesOutcomes[moves];
-
-    private int Score3((string Theirs, string Ours, int Outcome) input) => Codes[input.Ours] + input.Outcome;
-
-    // A for Rock, B for Paper, and C for Scissors.
-
-    // The score for a single round is the score for the shape you selected (1 for Rock, 2 for Paper, and 3 for Scissors) plus the score for the outcome of the round (0 if you lost, 3 if the round was a draw, and 6 if you won).
 
     private static class WithEverythingHardcoded
     {
