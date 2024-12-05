@@ -22,7 +22,7 @@ public class Y2023Day05 : Solver
         IEnumerable<Range> ranges = seeds.Chunk(2).Select(x => Range.FromStartAndLength(x[0], x[1])).ToList();
 
         var finalRanges = maps.Aggregate(ranges, (stepRanges, map) => stepRanges.SelectMany(map.Split));
-        return finalRanges.MinBy(range => range.Start)?.Start ?? 0;
+        return finalRanges.MinBy(range => range.From)?.From ?? 0;
     }
 
     private static List<Map> ParseMaps(List<string> lines)
@@ -130,33 +130,18 @@ public class Y2023Day05 : Solver
             var sourceIntersection = input.Intersect(SourceRange);
 
             List<Range> unmapped = [];
-            if (input.End > sourceIntersection.End)
+            if (input.To > sourceIntersection.To)
             {
-                unmapped.Add(input with { Start = sourceIntersection.End + 1 });
+                unmapped.Add(input with { From = sourceIntersection.To + 1 });
             }
 
-            if (input.Start < sourceIntersection.Start)
+            if (input.From < sourceIntersection.From)
             {
-                unmapped.Add(input with { End = sourceIntersection.Start - 1 });
+                unmapped.Add(input with { To = sourceIntersection.From - 1 });
             }
 
             var destinationMapped = sourceIntersection.Shift(Shift);
             return (destinationMapped, unmapped);
         }
-    }
-
-    public record Range(long Start, long End)
-    {
-        public static Range FromStartAndLength(long start, long length) => new(start, start + length - 1);
-
-        public override string ToString() => $"[{Start}, {End}]";
-
-        public bool Contains(long input) => input.Between(Start, End);
-
-        public Range Intersect(Range other) => new(Math.Max(Start, other.Start), Math.Min(End, other.End));
-
-        public bool Overlaps(Range other) => other.End >= Start && other.Start <= End;
-
-        public Range Shift(long shift) => new(Start + shift, End + shift);
     }
 }
