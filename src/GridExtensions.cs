@@ -19,6 +19,11 @@ public static class GridExtensions
         }
     }
 
+    public static string PrettyPrint<T>(this Grid<T> grid) => PrettyPrint(grid, x => x?.ToString() ?? string.Empty);
+
+    public static string PrettyPrint<T>(this Grid<T> grid, Func<T, string> formatter) =>
+        string.Join(Environment.NewLine, grid.Items.Select(row => string.Join(" ", row.Select(formatter))));
+
     public static List<List<T>> Rotate45<T>(this Grid<T> grid, Rotation rotation) =>
         rotation switch
         {
@@ -116,4 +121,26 @@ public static class GridExtensions
 
         return new(result);
     }
+
+    public static bool TryGetValue<T>(this Grid<T> grid, Cell cell, out T value)
+    {
+        if (grid.Contains(cell))
+        {
+            value = grid.ValueAt(cell);
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
+
+    public static T ValueAt<T>(this Grid<T> grid, Cell cell) => grid.Items[cell.Row][cell.Col];
+
+    public static T ValueAt<T>(this Grid<T> grid, int row, int col) => grid.Items[row][col];
+
+    public static T ValueAtOrDefault<T>(this Grid<T> grid, Cell cell, T defaultValue) => grid.Contains(cell) ? grid.ValueAt(cell) : defaultValue;
+
+    public static T? ValueAtOrDefault<T>(this Grid<T> grid, int row, int col) => grid.Contains(row, col) ? grid.ValueAt(row, col) : default;
+
+    public static T? ValueAtOrDefault<T>(this Grid<T> grid, Cell cell) => grid.Contains(cell) ? grid.ValueAt(cell) : default;
 }

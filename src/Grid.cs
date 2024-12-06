@@ -1,42 +1,40 @@
 namespace AdventOfCode;
 
-public class Grid<T>
+public sealed class Grid<T>(List<List<T>> items)
 {
     public Grid(IEnumerable<IEnumerable<T>> items) : this(items.Select(it => it.ToList()).ToList())
     {
     }
 
-    public Grid(List<List<T>> items)
-    {
-        Items = items.ToList();
-        Cols = items[0].Count;
-        Rows = items.Count;
-    }
-
-    public int Cols { get; }
+    public int Cols { get; } = items[0].Count;
 
     public IEnumerable<GridEntry<T>> Entries => Items.SelectMany((row, rowIndex) => row.Select((value, colIndex) => new GridEntry<T>(new(rowIndex, colIndex), value)));
 
-    public List<List<T>> Items { get; }
+    public List<List<T>> Items { get; } = items.ToList();
 
-    public int Rows { get; }
+    public int Rows { get; } = items.Count;
 
-    public virtual GridEntry<T> EntryAt(Cell cell) => new(cell, ValueAt(cell));
+    public override string ToString() => $"Grid({Rows}x{Cols})";
 
-    public virtual void SetValue(int row, int col, T value) => Items[row][col] = value;
+    public GridEntry<T> EntryAt(Cell cell) => new(cell, this.ValueAt(cell));
 
-    public virtual void SetValue(Cell cell, T value) => SetValue(cell.Row, cell.Col, value);
+    public void SetValue(int row, int col, T value) => Items[row][col] = value;
 
-    public virtual T ValueAt(Cell cell) => Items[cell.Row][cell.Col];
-
-    public virtual T ValueAt(int row, int col) => Items[row][col];
-
-    public virtual T? ValueAtOrDefault(Cell cell) => this.Contains(cell) ? ValueAt(cell) : default;
+    public void SetValue(Cell cell, T value) => SetValue(cell.Row, cell.Col, value);
 }
 
 public static class GridFactory
 {
+    public static Grid<T> Create<T, TIn>(IEnumerable<IEnumerable<TIn>> items, Func<TIn, T> parser) =>
+        new(items.Select(row => row.Select(parser)));
+
     public static Grid<T> Create<T>(IEnumerable<IEnumerable<T>> items) => new(items);
+
+    public static Grid<T> Empty<T>(int rowCount, int columnCount, T value) =>
+        new(Enumerable.Range(0, rowCount).Select(_ => Enumerable.Repeat(value, columnCount)));
 }
 
-public record GridEntry<T>(Cell Cell, T Value);
+public record GridEntry<T>(Cell Cell, T Value)
+{
+    public override string ToString() => $"GridEntry({Cell}, {Value})";
+}
