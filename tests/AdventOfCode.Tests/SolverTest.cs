@@ -1,6 +1,6 @@
 namespace AdventOfCode.Tests;
 
-using AdventOfCodeDotNet;
+using Tool;
 
 public abstract class SolverTest<T> where T : Solver
 {

@@ -1,7 +1,7 @@
 namespace AdventOfCode.Y2023.Day22;
 
 using System.Collections;
-using AdventOfCodeDotNet;
+using Tool;
 
 public class Y2023Day22 : Solver
 {

@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2024.Day05;
 
-using AdventOfCodeDotNet;
+using Tool;
 using Rule = (int Before, int After);
 using Update = List<int>;
 
@@ -42,7 +42,7 @@ public class Y2024Day05 : Solver
 
     private static Update Sort(Update update, IComparer<int> ordering) => [..update.OrderBy(x => x, ordering)];
 
-    private class RuleBasedComparer(List<Rule> rules) : IComparer<int>
+    private sealed class RuleBasedComparer(List<Rule> rules) : IComparer<int>
     {
         public int Compare(int x, int y) => rules.Contains((x, y)) ? -1 : rules.Contains((y, x)) ? 1 : 0;
     }

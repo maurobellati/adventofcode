@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2024.Day01;
 
-using AdventOfCodeDotNet;
+using Tool;
 
 public class Y2024Day01 : Solver
 {

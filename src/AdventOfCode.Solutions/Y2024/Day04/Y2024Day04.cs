@@ -2,7 +2,7 @@ namespace AdventOfCode.Y2024.Day04;
 
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using AdventOfCodeDotNet;
+using Tool;
 
 public class Y2024Day04 : Solver
 {

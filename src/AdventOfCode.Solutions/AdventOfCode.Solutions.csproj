@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="AdventOfCodeDotNet">
-      <HintPath>..\..\..\advent-of-code-cli\AdventOfCodeDotNet\bin\Debug\net8.0\AdventOfCodeDotNet.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\AdventOfCode.Tool\AdventOfCode.Tool.csproj" />
   </ItemGroup>
 
 </Project>

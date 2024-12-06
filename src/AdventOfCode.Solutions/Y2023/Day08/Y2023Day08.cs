@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2023.Day08;
 
-using AdventOfCodeDotNet;
+using Tool;
 using LR = (string Left, string Right);
 
 public class Y2023Day08 : Solver

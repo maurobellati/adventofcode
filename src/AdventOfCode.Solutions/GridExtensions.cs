@@ -1,5 +1,7 @@
 namespace AdventOfCode;
 
+using System.Diagnostics.CodeAnalysis;
+
 public static class GridExtensions
 {
     public static bool Contains<T>(this Grid<T> grid, Cell cell) => grid.Contains(cell.Row, cell.Col);
@@ -122,7 +124,7 @@ public static class GridExtensions
         return new(result);
     }
 
-    public static bool TryGetValue<T>(this Grid<T> grid, Cell cell, out T value)
+    public static bool TryGetValue<T>(this Grid<T> grid, Cell cell, [MaybeNullWhen(false)] out T value)
     {
         if (grid.Contains(cell))
         {

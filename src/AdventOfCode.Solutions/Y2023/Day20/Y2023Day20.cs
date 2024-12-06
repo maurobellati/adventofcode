@@ -1,7 +1,7 @@
 namespace AdventOfCode.Y2023.Day20;
 
 using System.Diagnostics;
-using AdventOfCodeDotNet;
+using Tool;
 using Pulse = int;
 
 public class Y2023Day20 : Solver

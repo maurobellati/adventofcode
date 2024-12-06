@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2023.Day23;
 
-using AdventOfCodeDotNet;
+using Tool;
 using Path = Stack<Cell>;
 
 public class Y2023Day23 : Solver

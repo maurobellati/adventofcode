@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2022.Day05;
 
-using AdventOfCodeDotNet;
+using Tool;
 using Instruction = (int Count, int Source, int Destination);
 using MoveStrategy = Action<IEnumerable<char>, Stack<char>>;
 

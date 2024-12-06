@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2023.Day17;
 
-using AdventOfCodeDotNet;
+using Tool;
 using MinMax = (int Min, int Max);
 
 public class Y2023Day17 : Solver

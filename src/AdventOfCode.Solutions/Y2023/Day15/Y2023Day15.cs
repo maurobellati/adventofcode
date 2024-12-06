@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2023.Day15;
 
-using AdventOfCodeDotNet;
+using Tool;
 using KeyValue = (string Key, int Value);
 
 public class Y2023Day15 : Solver

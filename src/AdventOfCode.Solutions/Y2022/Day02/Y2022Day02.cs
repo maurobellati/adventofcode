@@ -1,7 +1,7 @@
 namespace AdventOfCode.Y2022.Day02;
 
 using System.Diagnostics;
-using AdventOfCodeDotNet;
+using Tool;
 using Match = (Y2022Day02.WithDecoding.Move Elf, Y2022Day02.WithDecoding.Move Human);
 
 public class Y2022Day02 : Solver
