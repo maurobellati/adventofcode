@@ -23,11 +23,15 @@ public class Grid<T>
 
     public virtual GridEntry<T> EntryAt(Cell cell) => new(cell, ValueAt(cell));
 
+    public virtual void SetValue(int row, int col, T value) => Items[row][col] = value;
+
+    public virtual void SetValue(Cell cell, T value) => SetValue(cell.Row, cell.Col, value);
+
     public virtual T ValueAt(Cell cell) => Items[cell.Row][cell.Col];
 
-    public virtual T? ValueAtOrDefault(Cell cell) => this.Contains(cell) ? ValueAt(cell) : default;
-
     public virtual T ValueAt(int row, int col) => Items[row][col];
+
+    public virtual T? ValueAtOrDefault(Cell cell) => this.Contains(cell) ? ValueAt(cell) : default;
 }
 
 public static class GridFactory

@@ -17,4 +17,6 @@ public sealed record Cell(int Row, int Col)
     public static Cell operator *(Cell cell, int factor) => factor == 1 ? cell : new(cell.Row * factor, cell.Col * factor);
 
     public static Cell operator -(Cell x, Cell y) => new(x.Row - y.Row, x.Col - y.Col);
+
+    public override string ToString() => $"({Row}, {Col})";
 }
