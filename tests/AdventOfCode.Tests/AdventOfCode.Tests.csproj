@@ -18,11 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\AdventOfCode.csproj" />
+    <ProjectReference Include="..\..\src\AdventOfCode.Solutions\AdventOfCode.Solutions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

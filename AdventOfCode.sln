@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode", "src/AdventOfCode.csproj", "{16103F0A-2309-49AD-9ECD-42EF69E37EDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Solutions", "src/AdventOfCode.Solutions/AdventOfCode.Solutions.csproj", "{16103F0A-2309-49AD-9ECD-42EF69E37EDC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{75550B16-0764-4464-87B0-EB3A96AF4E2E}"
 EndProject
