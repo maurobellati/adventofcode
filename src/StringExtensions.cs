@@ -55,7 +55,7 @@ public static partial class StringExtensions
 
     public static bool IsNotEmpty(this string input) => !input.IsEmpty();
 
-    public static string[] Lines(this string input)
+    public static List<string> Lines(this string input)
     {
         if (string.IsNullOrEmpty(input))
         {
@@ -68,10 +68,10 @@ public static partial class StringExtensions
         // Remove the trailing empty line if the input ends with a newline
         if (lines.Length > 0 && string.IsNullOrEmpty(lines[^1]))
         {
-            return lines[..^1];
+            return lines.SkipLast().ToList();
         }
 
-        return lines;
+        return lines.ToList();
     }
 
     public static string[] Lines(this string input, StringSplitOptions options) => input.Split(Environment.NewLine, options);

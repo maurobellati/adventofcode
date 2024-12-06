@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Reference Include="AdventOfCodeDotNet">
-      <HintPath>..\advent-of-code-cli\AdventOfCodeDotNet\bin\Debug\net8.0\AdventOfCodeDotNet.dll</HintPath>
+      <HintPath>..\..\advent-of-code-cli\AdventOfCodeDotNet\bin\Debug\net8.0\AdventOfCodeDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
 
