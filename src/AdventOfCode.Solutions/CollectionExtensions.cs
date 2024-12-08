@@ -2,6 +2,34 @@ namespace AdventOfCode;
 
 public static class CollectionExtensions
 {
+    public static IEnumerable<IList<T>> CartesianPower<T>(this IList<T> items, int positions)
+    {
+        // Start recursion with an empty LinkedList
+        return Generate(positions, []);
+
+        // Helper method for recursive generation
+        IEnumerable<List<T>> Generate(int depth, LinkedList<T> current)
+        {
+            if (depth == 0)
+            {
+                yield return [..current]; // Yield a copy of the current LinkedList
+                yield break;
+            }
+
+            foreach (var item in items)
+            {
+                current.AddFirst(item); // Add item to the beginning
+
+                foreach (var result in Generate(depth - 1, current))
+                {
+                    yield return result;
+                }
+
+                current.RemoveFirst(); // Backtrack by removing the head
+            }
+        }
+    }
+
     public static IEnumerable<(T, T)> CartesianProduct<T>(this IEnumerable<T> input)
     {
         var list = input.ToList();
