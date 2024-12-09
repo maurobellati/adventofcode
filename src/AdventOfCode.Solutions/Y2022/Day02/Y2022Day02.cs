@@ -40,28 +40,32 @@ public class Y2022Day02 : Solver
         {
             return input.Select(line => new Match(ElfMove(line[0]), HumanMove(line[2]))).Select(CalculateScore).Sum();
 
-            Move HumanMove(char @char) =>
-                @char switch
+            Move HumanMove(char @char)
+            {
+                return @char switch
                 {
                     'X' => Move.Rock,
                     'Y' => Move.Paper,
                     'Z' => Move.Scissors,
                     _ => throw new InvalidOperationException()
                 };
+            }
         }
 
         public static int PartTwo(List<string> input)
         {
             return input.Select(line => new Match(ElfMove(line[0]), HumanMove(ElfMove(line[0]), line[2]))).Select(CalculateScore).Sum();
 
-            Move HumanMove(Move elf, char @char) =>
-                @char switch
+            Move HumanMove(Move elf, char @char)
+            {
+                return @char switch
                 {
                     'X' => Losers[elf],
                     'Y' => elf,
                     'Z' => Winners[elf],
                     _ => throw new InvalidOperationException()
                 };
+            }
         }
 
         private static int CalculateScore(Match match)
