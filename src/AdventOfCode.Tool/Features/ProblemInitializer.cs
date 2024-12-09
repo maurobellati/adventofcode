@@ -60,7 +60,7 @@ public class ProblemInitializer(
                             public class {{className}} : {{nameof(Solver)}}
                             {
                                 public object PartOne(List<string> input) => 0;
-
+                            
                                 public object PartTwo(List<string> input) => 0;
                             }
                             """;

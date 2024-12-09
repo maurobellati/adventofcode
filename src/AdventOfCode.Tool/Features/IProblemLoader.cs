@@ -4,5 +4,5 @@ using ErrorOr;
 
 public interface IProblemLoader
 {
-    IAsyncEnumerable<ErrorOr<SolvableProblem>> Load(int? year = null, int? day = null, string? prefix = null);
+    IAsyncEnumerable<ErrorOr<SolvableProblem>> Load(int? year = null, int? day = null);
 }

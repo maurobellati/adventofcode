@@ -38,17 +38,22 @@ public class AdventOfCodeApp
         app.Configure(
             config =>
             {
-                config.SetApplicationName("AdventOfCode-Cli");
+                // config.SetApplicationName("AdventOfCode-Cli");
 
                 config.AddCommand<ConfigureCommand>("config");
 
                 config.AddCommand<InitProblemsCommand>("init")
-                    .WithExample("init", "year", "2021", "1");
+                    .WithDescription("Initialize problems for a given year and day")
+                    .WithExample("init", "2024")
+                    .WithExample("init", "2024", "1");
 
                 config.AddCommand<RunSolversCommand>("run")
-                    .WithExample("run", "2021", "1");
+                    .WithDescription("Run solvers for a given year and day")
+                    .WithExample("run", "2024")
+                    .WithExample("run", "2024", "1");
 
                 config.AddCommand<UploadAnswerCommand>("upload")
+                    .WithDescription("Upload the most pending answer for a given year and day")
                     .WithExample("upload", "2021", "1");
             });
     }

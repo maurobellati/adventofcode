@@ -71,7 +71,7 @@ internal sealed class RunSolversCommand(ISolverRunner solverRunner) : AsyncComma
             .StartAsync(
                 async ctx =>
                 {
-                    await foreach (var result in solverRunner.Run(settings.Year, settings.Day, settings.Prefix))
+                    await foreach (var result in solverRunner.Run(settings.Year, settings.Day))
                     {
                         result.Switch(
                             ok => AddRow(table, ok),
@@ -91,12 +91,6 @@ internal sealed class RunSolversCommand(ISolverRunner solverRunner) : AsyncComma
         [Description("The day to run")]
         [CommandArgument(1, "[DAY]")]
         public int? Day { get; init; }
-
-        [Description("The prefix to use")]
-        [CommandOption("-x|--prefix")]
-        public string? Prefix { get; set; }
-
-        // TODO: Add option to run just Part 1 or Part 2
 
         [Description("The year to run")]
         [CommandArgument(0, "[YEAR]")]

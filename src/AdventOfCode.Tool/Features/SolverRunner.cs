@@ -5,9 +5,9 @@ using Infrastructure;
 
 public class SolverRunner(IProblemLoader problemLoader) : ISolverRunner
 {
-    public async IAsyncEnumerable<ErrorOr<SolutionResult>> Run(int? year = null, int? day = null, string? prefix = null)
+    public async IAsyncEnumerable<ErrorOr<SolutionResult>> Run(int? year = null, int? day = null)
     {
-        await foreach (var problem in problemLoader.Load(year, day, prefix))
+        await foreach (var problem in problemLoader.Load(year, day))
         {
             yield return problem.Then(RunProblem);
         }
