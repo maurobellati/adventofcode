@@ -30,18 +30,6 @@ public static class CollectionExtensions
         }
     }
 
-    public static IEnumerable<(T, T)> CartesianProduct<T>(this IEnumerable<T> input)
-    {
-        var list = input.ToList();
-        for (var i = 0; i < list.Count; i++)
-        {
-            for (var j = i + 1; j < list.Count; j++)
-            {
-                yield return (list[i], list[j]);
-            }
-        }
-    }
-
     public static IEnumerable<IEnumerable<T>> CartesianProduct<T>(this IEnumerable<IEnumerable<T>> sequences)
     {
         // base case:
@@ -78,6 +66,27 @@ public static class CollectionExtensions
         if (chunk.Count != 0)
         {
             yield return chunk;
+        }
+    }
+
+    public static IEnumerable<Pair<T>> GetSymmetricPairs<T>(this IEnumerable<T> input)
+    {
+        var list = input.ToList();
+        return
+            from a in list
+            from b in list
+            select new Pair<T>(a, b);
+    }
+
+    public static IEnumerable<(T, T)> GetUnorderedUniquePairs<T>(this IEnumerable<T> input)
+    {
+        var list = input.ToList();
+        for (var i = 0; i < list.Count; i++)
+        {
+            for (var j = i + 1; j < list.Count; j++)
+            {
+                yield return (list[i], list[j]);
+            }
         }
     }
 

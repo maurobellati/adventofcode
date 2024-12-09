@@ -14,6 +14,8 @@ public sealed class Grid<T>(List<List<T>> items)
 
     public int Rows { get; } = items.Count;
 
+    public static implicit operator Box(Grid<T> grid) => grid.GetBox();
+
     public override string ToString() => $"Grid({Rows}x{Cols})";
 
     public GridEntry<T> EntryAt(Cell cell) => new(cell, this.ValueAt(cell));

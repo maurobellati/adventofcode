@@ -8,16 +8,10 @@ public class Y2024Day08 : Solver
 
     public object PartTwo(List<string> input) => Solve(input, GetAntinodesPartTwo);
 
-    private static IEnumerable<Pair<Cell>> GetAllPairs(ICollection<Cell> cells) =>
-        from a in cells
-        from b in cells
-        where a != b
-        select new Pair<Cell>(a, b);
-
     private static IEnumerable<Cell> GetAntinodes(ICollection<Cell> cells, Box box, Func<Pair<Cell>, Box, IEnumerable<Cell>> antinodesGenerator) =>
-        GetAllPairs(cells).SelectMany(pair => antinodesGenerator(pair, box));
+        cells.GetSymmetricPairs().Where(p => p.A != p.B).SelectMany(pair => antinodesGenerator(pair, box));
 
-    private static IEnumerable<Cell> GetAntinodesPartOne(Pair<Cell> pair, Box box) => new[] { GetNext(pair.A, pair.B) }.Where(box.Contains);
+    private static IEnumerable<Cell> GetAntinodesPartOne(Pair<Cell> pair, Box box) => new[] { pair.B + (pair.B - pair.A) }.Where(box.Contains);
 
     private static IEnumerable<Cell> GetAntinodesPartTwo(Pair<Cell> pair, Box box)
     {
@@ -30,15 +24,13 @@ public class Y2024Day08 : Solver
         }
     }
 
-    private static Cell GetNext(Cell a, Cell b) => b + (b - a);
-
-    private static object Solve(List<string> input, Func<Pair<Cell>, Box, IEnumerable<Cell>> antinodedGenerator)
+    private static object Solve(List<string> input, Func<Pair<Cell>, Box, IEnumerable<Cell>> antinodesGenerator)
     {
         var grid = GridFactory.Create(input);
         return grid.Entries
             .Where(x => x.Value != '.')
             .GroupBy(entry => entry.Value, entry => entry.Cell)
-            .SelectMany(entries => GetAntinodes(entries.ToList(), grid.GetBox(), antinodedGenerator))
+            .SelectMany(cells => GetAntinodes(cells.ToList(), grid, antinodesGenerator))
             .Distinct()
             .Count();
     }

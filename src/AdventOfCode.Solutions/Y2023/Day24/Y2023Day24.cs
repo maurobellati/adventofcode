@@ -10,7 +10,7 @@ public class Y2023Day24 : Solver
         var max = 400000000000000;
         return input
             .Select(Parse)
-            .CartesianProduct()
+            .GetUnorderedUniquePairs()
             .Count(tuple => tuple.Item1 != tuple.Item2 && DoRaysIntersectInvertingMatrix(tuple.Item1, tuple.Item2, min, max));
     }
 
