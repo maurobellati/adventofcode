@@ -20,9 +20,6 @@ public class Y2023Day23 : Solver
         [Direction.W] = SlopeLeft
     };
 
-    private static Grid<char> grid;
-    private static Cell goal;
-
     public object PartOne(List<string> input) => SolveWith(input, BuildGetCandidates(true));
 
     public object PartTwo(List<string> input) => SolveWith(input, BuildGetCandidates(false));
@@ -42,9 +39,11 @@ public class Y2023Day23 : Solver
             .Select(move => move.Candidate);
 
     private static void DfsIterative(
+        Grid<char> grid,
+        Cell start,
+        Cell goal,
         Func<Cell, Path, Grid<char>, IEnumerable<Cell>> getCandidates,
-        Action<Path> processSolution,
-        Cell start)
+        Action<Path> processSolution)
     {
         // path is the full path from start to goal
         Path path = new([start]);
@@ -97,23 +96,16 @@ public class Y2023Day23 : Solver
 
     private static int SolveWith(List<string> input, Func<Cell, Path, Grid<char>, IEnumerable<Cell>> getCandidates)
     {
-        grid = GridFactory.Create(input);
+        var grid = GridFactory.Create(input);
         var start = FindOpenCell(input, 0);
-        goal = FindOpenCell(input, input.Count - 1);
-
-        Path path = new([start]);
+        var goal = FindOpenCell(input, grid.Rows);
 
         List<int> solutionLengths = [];
-        Action<Path> goalReached = solution =>
-        {
-            solutionLengths.Add(solution.Count - 1);
-            // Console.WriteLine($"Goal reached in {solution.Count} steps");
-            // Console.WriteLine($"Path: {string.Join(" -> ", solution)}");
-        };
 
-        // DfsRecursive(getCandidates, goalReached, path);
-        DfsIterative(getCandidates, goalReached, start);
+        DfsIterative(grid, start, goal, getCandidates, GoalReached);
 
         return solutionLengths.Max();
+
+        void GoalReached(Path solution) => solutionLengths.Add(solution.Count - 1);
     }
 }
