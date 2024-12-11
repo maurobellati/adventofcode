@@ -1,5 +1,7 @@
 namespace AdventOfCode;
 
+using System.Numerics;
+
 public static class CollectionExtensions
 {
     public static IEnumerable<IList<T>> CartesianPower<T>(this IList<T> items, int positions)
@@ -134,6 +136,11 @@ public static class CollectionExtensions
             }
         }
     }
+
+    public static void SetOrIncrement<TKey, TValue>(this Dictionary<TKey, TValue> input, TKey key, TValue increment)
+        where TKey : notnull
+        where TValue : IAdditionOperators<TValue, TValue, TValue>, IAdditiveIdentity<TValue, TValue>
+        => input[key] = (input.GetValueOrDefault(key) ?? TValue.AdditiveIdentity) + increment;
 
     public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> input, Predicate<T> separator)
     {
