@@ -2,7 +2,8 @@ namespace AdventOfCode;
 
 public sealed record Cell(int Row, int Col)
 {
-    public static Cell Origin => new(0, 0);
+    public static readonly Cell Origin = new(0, 0);
+    public static readonly Cell Zero = new(0, 0);
 
     public static Cell operator +(Cell x, Cell y) => new(x.Row + y.Row, x.Col + y.Col);
 
