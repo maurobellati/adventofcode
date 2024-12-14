@@ -6,6 +6,8 @@ public static class CelLExtensions
 
     public static Cell Mod<T>(this Cell cell, Grid<T> grid) => cell.Mod(grid.Rows, grid.Cols);
 
+    public static Cell Mod(this Cell cell, Cell size) => cell.Mod(size.Row, size.Col);
+
     public static Cell Mod(this Cell cell, int rows, int cols) => new(cell.Row.Mod(rows), cell.Col.Mod(cols));
 
     public static Cell Move(this Cell input, Direction direction, int size = 1) => input + direction.ToStep(size);
