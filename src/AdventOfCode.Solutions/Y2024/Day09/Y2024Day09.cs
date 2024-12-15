@@ -51,8 +51,6 @@ public class Y2024Day09 : Solver
         }
     }
 
-    private static void Dump(IEnumerable<FileId> fileIds) => Console.WriteLine(string.Join("", fileIds.Select(it => it is not null ? it.ToString() : ".")));
-
     private static bool IsEmptySpace(Chunk input) => input.Id is null;
 
     private static bool IsFile(Chunk input) => input.Id is not null;

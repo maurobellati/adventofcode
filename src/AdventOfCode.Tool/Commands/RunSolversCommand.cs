@@ -10,34 +10,16 @@ using Spectre.Console.Cli;
 
 internal sealed class RunSolversCommand(ISolverRunner solverRunner) : AsyncCommand<RunSolversCommand.Settings>
 {
-    private static void AddRow(Table table, SolutionResult result) =>
-        table.AddRow(
-            new Markup($"{MarkupExtensions.YearDay(result.ProblemInstance.Key.Year, result.ProblemInstance.Key.Day)} [yellow]{Stars(result)}[/]"),
-            MarkupResult(result.Part01),
-            MarkupResult(result.Part02));
-
-    private static Table InitTable()
-    {
-        var table = new Table { Width = 120 };
-        table.AddColumn("Problem", it => it.Width(20));
-        table.AddColumn("Part 01", it => it.Width(50));
-        table.AddColumn("Part 02", it => it.Width(50));
-
-        table.Border = TableBorder.Rounded;
-        return table;
-    }
-
-    private static Markup MarkupResult(PartResult partResult)
+    private static string FormatResult(PartResult partResult)
     {
         var answer = partResult.Answer.EscapeMarkup();
-        return new(
-            partResult.ResultType switch
-            {
-                ResultType.Success => $"[green]{answer}[/]",
-                ResultType.Failure => $"[red]{answer}[/] (expected: [green]{partResult.ExpectedAnswer}[/])",
-                ResultType.Pending => $"[yellow]{answer}[/]",
-                _ => throw new UnreachableException()
-            });
+        return partResult.ResultType switch
+        {
+            ResultType.Success => $"  :check_mark_button: [green]{answer}[/]",
+            ResultType.Pending => $"  :crossed_fingers: [yellow]{answer}[/]",
+            ResultType.Failure => $"  :cross_mark: [red]{answer}[/] (expected: [green]{partResult.ExpectedAnswer}[/])",
+            _ => throw new UnreachableException()
+        };
     }
 
     private static void ReportErrors(List<Error> errors)
@@ -53,7 +35,8 @@ internal sealed class RunSolversCommand(ISolverRunner solverRunner) : AsyncComma
         }
     }
 
-    private static string Stars(SolutionResult result) => string.Join(string.Empty, result.PartResults.Where(partResult => partResult.ResultType == ResultType.Success).Select(_ => ":glowing_star:"));
+    private static void WriteErrors(List<Error> errors) =>
+        AnsiConsole.MarkupLine($"[red]  Error:[/] {errors.First().Description}");
 
     private static void WriteIntro(Settings settings)
     {
@@ -61,22 +44,32 @@ internal sealed class RunSolversCommand(ISolverRunner solverRunner) : AsyncComma
         AnsiConsole.MarkupLine(message);
     }
 
+    private static void WriteOk(SolutionResult result)
+    {
+        var successCount = result.PartResults.Count(partResult => partResult.ResultType == ResultType.Success);
+        var stars = new string('*', successCount);
+        var key = result.ProblemInstance.Key;
+
+        AnsiConsole.MarkupLine($"[bold]{key.Year} Day {key.Day}[/] [yellow bold]{stars}[/]");
+        AnsiConsole.MarkupLine(FormatResult(result.Part01));
+        AnsiConsole.MarkupLine(FormatResult(result.Part02));
+        AnsiConsole.WriteLine();
+    }
+
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         WriteIntro(settings);
 
-        var table = InitTable();
         List<Error> allErrors = [];
-        await AnsiConsole.Live(table)
+
+        await AnsiConsole.Status()
             .StartAsync(
+                "Running ...",
                 async ctx =>
                 {
-                    await foreach (var result in solverRunner.Run(settings.Year, settings.Day))
+                    await foreach (var result in solverRunner.Run(settings.Year, settings.Day, m => ctx.Status(m)))
                     {
-                        result.Switch(
-                            ok => AddRow(table, ok),
-                            errors => allErrors.Add(errors.First())
-                        );
+                        result.Switch(WriteOk, WriteErrors);
                         ctx.Refresh();
                     }
                 });

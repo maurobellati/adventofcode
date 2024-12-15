@@ -25,14 +25,17 @@ internal sealed class ConfigureCommand(IConfigurationService configService) : Co
                 .DefaultValue(defaultConfig.ClassPath)
                 .AllowEmpty());
 
+        var session = AnsiConsole.Prompt(
+            new TextPrompt<string>("Enter the [green]session cookie[/]:")
+                .DefaultValue(defaultConfig.Session ?? string.Empty)
+                .AllowEmpty());
+
         var config = new Config
         {
             NamespaceName = namespaceTemplate,
             ClassName = classNameTemplate,
-            ClassPath = classPathTemplate
-            // DefaultYear = AnsiConsole.Prompt(
-            // new TextPrompt<int>("Enter the [green]default year[/] (default: [blue]2023[/]):")
-            // .DefaultValue(2023))
+            ClassPath = classPathTemplate,
+            Session = session
         };
 
         configService.Save(config);

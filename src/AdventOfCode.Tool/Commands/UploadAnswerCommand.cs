@@ -14,8 +14,7 @@ internal sealed class UploadAnswerCommand(IProblemUploader problemUploader) : As
 
     private static void WriteIntro(Settings settings)
     {
-        var message = settings.Year is null && settings.Day is null ? "Uploading all problems" : $"Uploading {MarkupExtensions.YearDay(settings.Year, settings.Day)}";
-        AnsiConsole.MarkupLine(message);
+        AnsiConsole.MarkupLine($"Uploading {MarkupExtensions.YearDay(settings.Year, settings.Day)}");
     }
 
     private static void WriteOk(string s) =>
@@ -43,11 +42,11 @@ internal sealed class UploadAnswerCommand(IProblemUploader problemUploader) : As
     internal sealed class Settings : CommandSettings
     {
         [Description("The day to upload")]
-        [CommandArgument(1, "[DAY]")]
-        public int? Day { get; init; }
+        [CommandArgument(1, "<DAY>")]
+        public int Day { get; init; }
 
         [Description("The year to upload")]
-        [CommandArgument(0, "[YEAR]")]
-        public int? Year { get; init; }
+        [CommandArgument(0, "<YEAR>")]
+        public int Year { get; init; }
     }
 }

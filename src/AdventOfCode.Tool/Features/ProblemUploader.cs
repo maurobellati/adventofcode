@@ -11,7 +11,7 @@ public class ProblemUploader(
 {
     private readonly Config config = configurationService.Load();
 
-    public async IAsyncEnumerable<ErrorOr<string>> UploadAsync(int? year = null, int? day = null)
+    public async IAsyncEnumerable<ErrorOr<string>> UploadAsync(int year, int day)
     {
         await foreach (var problem in solverRunner.Run(year, day))
         {

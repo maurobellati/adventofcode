@@ -4,5 +4,5 @@ using ErrorOr;
 
 public interface IProblemUploader
 {
-    public IAsyncEnumerable<ErrorOr<string>> UploadAsync(int? year = null, int? day = null);
+    public IAsyncEnumerable<ErrorOr<string>> UploadAsync(int year, int day);
 }
