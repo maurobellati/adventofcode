@@ -114,6 +114,11 @@ public static class CollectionExtensions
         }
     }
 
+    public static void SetOrIncrement<TKey, TValue>(this Dictionary<TKey, TValue> input, TKey key, TValue increment)
+        where TKey : notnull
+        where TValue : IAdditionOperators<TValue, TValue, TValue>, IAdditiveIdentity<TValue, TValue>
+        => input[key] = (input.GetValueOrDefault(key) ?? TValue.AdditiveIdentity) + increment;
+
     /// <summary>
     ///     Creates a sliding window of the specified size over the input sequence.
     ///     Each window is a consecutive sublist of elements, and windows overlap by size - 1 elements.
@@ -136,11 +141,6 @@ public static class CollectionExtensions
             }
         }
     }
-
-    public static void SetOrIncrement<TKey, TValue>(this Dictionary<TKey, TValue> input, TKey key, TValue increment)
-        where TKey : notnull
-        where TValue : IAdditionOperators<TValue, TValue, TValue>, IAdditiveIdentity<TValue, TValue>
-        => input[key] = (input.GetValueOrDefault(key) ?? TValue.AdditiveIdentity) + increment;
 
     public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> input, Predicate<T> separator)
     {
