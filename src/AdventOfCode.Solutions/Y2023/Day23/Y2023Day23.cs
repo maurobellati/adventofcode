@@ -92,7 +92,7 @@ public class Y2023Day23 : Solver
         }
     }
 
-    private static Cell FindOpenCell(List<string> lines, int row) => new(row, lines[row].IndexOf(Open, StringComparison.Ordinal));
+    private static Cell FindOpenCell(List<string> lines, int row) => new(row, lines[row].IndexOf(Open, Ordinal));
 
     private static int SolveWith(List<string> input, Func<Cell, Path, Grid<char>, IEnumerable<Cell>> getCandidates)
     {

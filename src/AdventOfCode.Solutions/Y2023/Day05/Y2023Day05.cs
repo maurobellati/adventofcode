@@ -33,7 +33,7 @@ public class Y2023Day05 : Solver
         while (i < lines.Count)
         {
             // if line has format: "SOURCE-to-DESTINATION map:"
-            if (lines[i].EndsWith("map:", StringComparison.InvariantCulture))
+            if (lines[i].EndsWith("map:", InvariantCulture))
             {
                 var label = lines[i];
 

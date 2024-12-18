@@ -29,7 +29,7 @@ public class Y2022Day07 : Solver
         var currentDir = root;
         foreach (var line in input)
         {
-            if (line.StartsWith("$ cd", StringComparison.InvariantCulture))
+            if (line.StartsWith("$ cd", InvariantCulture))
             {
                 var dirName = line.After(" ");
                 currentDir = dirName switch
@@ -46,7 +46,7 @@ public class Y2022Day07 : Solver
                 continue;
             }
 
-            if (line.StartsWith("dir", StringComparison.InvariantCulture))
+            if (line.StartsWith("dir", InvariantCulture))
             {
                 var dirName = line.After(" ");
                 currentDir.AddDirectory(new(dirName, currentDir));

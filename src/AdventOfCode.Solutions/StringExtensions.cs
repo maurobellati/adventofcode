@@ -6,33 +6,33 @@ using System.Text.RegularExpressions;
 
 public static partial class StringExtensions
 {
-    public static string After(this string input, char value, StringComparison comparisonType = StringComparison.Ordinal)
+    public static string After(this string input, char value, StringComparison comparisonType = Ordinal)
     {
         var indexOf = input.LastIndexOf(value);
         return indexOf == -1 ? input : input[(indexOf + 1)..];
     }
 
-    public static string After(this string input, string value, StringComparison comparisonType = StringComparison.Ordinal)
+    public static string After(this string input, string value, StringComparison comparisonType = Ordinal)
     {
         var indexOf = input.LastIndexOf(value, comparisonType);
         return indexOf == -1 ? input : input[(indexOf + value.Length)..];
     }
 
-    public static string Before(this string input, char value, StringComparison comparisonType = StringComparison.Ordinal)
+    public static string Before(this string input, char value, StringComparison comparisonType = Ordinal)
     {
         var indexOf = input.IndexOf(value, comparisonType);
         return indexOf == -1 ? input : input[..indexOf];
     }
 
-    public static string Before(this string input, string value, StringComparison comparisonType = StringComparison.Ordinal)
+    public static string Before(this string input, string value, StringComparison comparisonType = Ordinal)
     {
         var indexOf = input.IndexOf(value, comparisonType);
         return indexOf == -1 ? input : input[..indexOf];
     }
 
-    public static bool ContainsInvariant(this string input, char value) => input.Contains(value, StringComparison.InvariantCulture);
+    public static bool ContainsInvariant(this string input, char value) => input.Contains(value, InvariantCulture);
 
-    public static bool ContainsInvariant(this string input, string value) => input.Contains(value, StringComparison.InvariantCulture);
+    public static bool ContainsInvariant(this string input, string value) => input.Contains(value, InvariantCulture);
 
     public static IEnumerable<T> Extract<T>(this string input, [StringSyntax(StringSyntaxAttribute.Regex)] string pattern, Func<Match, T> parser) =>
         Regex.Matches(input, pattern).Select(parser);
@@ -96,8 +96,8 @@ public static partial class StringExtensions
         }
     }
 
-    public static string Strip(this string input, string oldValue, StringComparison? comparisonType = StringComparison.InvariantCulture) =>
-        input.Replace(oldValue, string.Empty, comparisonType ?? StringComparison.InvariantCulture);
+    public static string Strip(this string input, string oldValue, StringComparison? comparisonType = InvariantCulture) =>
+        input.Replace(oldValue, string.Empty, comparisonType ?? InvariantCulture);
 
     // public static string Strip(this string input, string oldValue, bool ignoreCase, CultureInfo? culture) =>
     // input.Replace(oldValue, string.Empty, ignoreCase, culture);

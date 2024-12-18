@@ -11,7 +11,7 @@ public class Y2023Day07 : Solver
 
     private static string GetCardValues(string cards, string cardOrder) =>
         // 32T3K becomes 01.00.08.01.11
-        cards.Select(card => cardOrder.IndexOf(card, StringComparison.InvariantCulture))
+        cards.Select(card => cardOrder.IndexOf(card, InvariantCulture))
             .Select(i => i.ToString("D2", CultureInfo.InvariantCulture)).Join(".");
 
     private static string GetHandType(string cards) => cards.Select(c => cards.Count(card => c == card)).OrderDescending().Join();

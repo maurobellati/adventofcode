@@ -91,7 +91,7 @@ public class Y2023Day10 : Solver
 
     private static Cell FindStart(List<string> lines) =>
         Enumerable.Range(0, lines.Count)
-            .Select(row => new Cell(row, lines[row].IndexOf('S', StringComparison.InvariantCulture)))
+            .Select(row => new Cell(row, lines[row].IndexOf('S', InvariantCulture)))
             .Single(cell => cell.Col >= 0);
 
     private static (ISet<Cell> Visited, bool IsInside) Flood(Cell cell, HashSet<Cell> loop, Box box)

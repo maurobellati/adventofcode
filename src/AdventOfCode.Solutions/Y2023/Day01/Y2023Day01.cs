@@ -45,12 +45,12 @@ public class Y2023Day01 : Solver
         };
 
         var first = replacements
-            .Select(kv => (kv.Value, Index: line.IndexOf(kv.Key, StringComparison.CurrentCultureIgnoreCase)))
+            .Select(kv => (kv.Value, Index: line.IndexOf(kv.Key, CurrentCultureIgnoreCase)))
             .Where(it => it.Index >= 0)
             .MinBy(it => it.Index)
             .Value;
         var last = replacements
-            .Select(kv => (kv.Value, Index: line.LastIndexOf(kv.Key, StringComparison.CurrentCultureIgnoreCase)))
+            .Select(kv => (kv.Value, Index: line.LastIndexOf(kv.Key, CurrentCultureIgnoreCase)))
             .Where(it => it.Index >= 0)
             .MaxBy(it => it.Index)
             .Value;

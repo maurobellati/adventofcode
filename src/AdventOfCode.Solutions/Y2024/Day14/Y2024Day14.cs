@@ -41,11 +41,11 @@ public class Y2024Day14 : Solver
     private static Room ParseRoom(List<string> input)
     {
         // 'size=' is not in the main problem, but we need it for tests.
-        var sizeConfig = input.FirstOrDefault(line => line.StartsWith("size=", StringComparison.InvariantCulture))?.ExtractInts().ToList();
+        var sizeConfig = input.FirstOrDefault(line => line.StartsWith("size=", InvariantCulture))?.ExtractInts().ToList();
         var size = new Cell(sizeConfig?[1] ?? 103, sizeConfig?[0] ?? 101);
 
         var robots = input
-            .Where(line => line.StartsWith("p=", StringComparison.InvariantCulture))
+            .Where(line => line.StartsWith("p=", InvariantCulture))
             .Select(line => line.ExtractInts().ToList())
             .Select(ints => new Robot(new(ints[1], ints[0]), new(ints[3], ints[2])))
             .ToList();
@@ -71,7 +71,7 @@ public class Y2024Day14 : Solver
         return room with { Robots = robots.ToList() };
     }
 
-    private class ConsecutiveCounter
+    private sealed class ConsecutiveCounter
     {
         private int currentStreak;
 
