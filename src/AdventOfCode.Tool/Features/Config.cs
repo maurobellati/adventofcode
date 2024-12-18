@@ -7,7 +7,7 @@ public class Config
 
     public string ClassName { get; set; } = "Y{Year}Day{Day}";
 
-    public string ClassPath { get; set; } = "src/Y{Year}/Day{Day}";
+    public string ClassPath { get; set; } = "Y{Year}/Day{Day}";
 
     public string NamespaceName { get; set; } = "AdventOfCode.Y{Year}.Day{Day}";
 
