@@ -1,8 +1,12 @@
 namespace AdventOfCode;
 
-public static class CelLExtensions
+public static class CellExtensions
 {
+    public static Cell Abs(this Cell cell) => new(Math.Abs(cell.Row), Math.Abs(cell.Col));
+
     public static int CompareTo(this Cell cell, Cell other) => cell.Row.NullableCompareTo(other.Row) ?? cell.Col.CompareTo(other.Col);
+
+    public static int ManhattanDistance(this Cell cell, Cell other) => Math.Abs(cell.Row - other.Row) + Math.Abs(cell.Col - other.Col);
 
     public static Cell Mod<T>(this Cell cell, Grid<T> grid) => cell.Mod(grid.Rows, grid.Cols);
 
