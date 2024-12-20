@@ -8,6 +8,18 @@ public static class CellExtensions
 
     public static int ManhattanDistance(this Cell cell, Cell other) => Math.Abs(cell.Row - other.Row) + Math.Abs(cell.Col - other.Col);
 
+    public static IEnumerable<Cell> ManhattanRing(this Cell center, int distance)
+    {
+        for (var i = 0; i < distance; i++)
+        {
+            var diff = distance - i;
+            yield return new(center.Row - i, center.Col - diff);
+            yield return new(center.Row - diff, center.Col + i);
+            yield return new(center.Row + i, center.Col + diff);
+            yield return new(center.Row + diff, center.Col - i);
+        }
+    }
+
     public static Cell Mod<T>(this Cell cell, Grid<T> grid) => cell.Mod(grid.Rows, grid.Cols);
 
     public static Cell Mod(this Cell cell, Cell size) => cell.Mod(size.Row, size.Col);
