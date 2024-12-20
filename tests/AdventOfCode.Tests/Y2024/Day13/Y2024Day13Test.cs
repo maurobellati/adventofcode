@@ -24,5 +24,5 @@ public class Y2024Day13Test : SolverTest<Y2024Day13>
 
     protected override IEnumerable<TestCase> PartOnes() => [new(Input, 480)];
 
-    protected override IEnumerable<TestCase> PartTwos() => [new(Input, 0)];
+    protected override IEnumerable<TestCase> PartTwos() => [new(Input, 875318608908L)];
 }
