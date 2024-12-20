@@ -1,5 +1,6 @@
 namespace AdventOfCode.Tool.Features;
 
+using System.Diagnostics;
 using ErrorOr;
 using Infrastructure;
 
@@ -21,14 +22,15 @@ public class SolverRunner(IProblemLoader problemLoader) : ISolverRunner
 
     private static PartResult RunPart(Func<List<string>, object> solution, List<string> problemInput, string? expectedAnswer)
     {
+        var startTime = Stopwatch.GetTimestamp();
         try
         {
             var answer = solution(problemInput).ToString();
-            return new(GetResultType(answer, expectedAnswer), answer, expectedAnswer);
+            return new(GetResultType(answer, expectedAnswer), answer, expectedAnswer, Stopwatch.GetElapsedTime(startTime));
         }
         catch (Exception ex)
         {
-            return new(ResultType.Failure, $"Error: {ex.Message}", expectedAnswer);
+            return new(ResultType.Failure, $"Error: {ex.Message}", expectedAnswer, Stopwatch.GetElapsedTime(startTime));
         }
     }
 

@@ -13,13 +13,14 @@ internal sealed class RunSolversCommand(ISolverRunner solverRunner) : AsyncComma
     private static string FormatResult(PartResult partResult)
     {
         var answer = partResult.Answer.EscapeMarkup();
-        return partResult.ResultType switch
+        var formatResult = partResult.ResultType switch
         {
             ResultType.Success => $"  :check_mark_button: [green]{answer}[/]",
             ResultType.Pending => $"  :crossed_fingers: [yellow]{answer}[/]",
             ResultType.Failure => $"  :cross_mark: [red]{answer}[/] (expected: [green]{partResult.ExpectedAnswer}[/])",
             _ => throw new UnreachableException()
         };
+        return formatResult + $" [grey]({partResult.Duration.TotalMilliseconds}ms)[/]";
     }
 
     private static void ReportErrors(List<Error> errors)
@@ -63,6 +64,7 @@ internal sealed class RunSolversCommand(ISolverRunner solverRunner) : AsyncComma
         List<Error> allErrors = [];
 
         await AnsiConsole.Status()
+            .AutoRefresh(true)
             .StartAsync(
                 "Running ...",
                 async ctx =>
