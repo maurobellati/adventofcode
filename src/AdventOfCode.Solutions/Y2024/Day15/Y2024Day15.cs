@@ -17,7 +17,7 @@ public class Y2024Day15 : Solver
             world.Boxes.Select(box => new Box(box.Cells.Select(X2).SelectMany(ExpandRight).ToList())).ToList(),
             X2(world.Robot));
 
-        Cell X2(Cell cell) => new(cell.Row * 2, cell.Col * 2);
+        Cell X2(Cell cell) => cell with { Col = cell.Col * 2 };
         IEnumerable<Cell> ExpandRight(Cell cell) => new[] { cell, cell with { Col = cell.Col + 1 } };
     }
 
@@ -44,12 +44,6 @@ public class Y2024Day15 : Solver
         return new(walls, boxes, robot);
     }
 
-    private long Gps(World world) =>
-        world.Boxes
-            .Select(box => box.Cells.MinBy(c => c.Row)!)
-            .Select(cell => (cell.Row * 100) + cell.Col)
-            .Sum();
-
     private static void PrettyPrint(World world)
     {
         for (var row = 0; row <= world.Rows; row++)
@@ -66,9 +60,16 @@ public class Y2024Day15 : Solver
                 };
                 AnsiConsole.Write(CultureInfo.InvariantCulture, @char);
             }
+
             AnsiConsole.WriteLine();
         }
     }
+
+    private long Gps(World world) =>
+        world.Boxes
+            .Select(box => box.Cells.MinBy(c => c.Row)!)
+            .Select(cell => (cell.Row * 100) + cell.Col)
+            .Sum();
 
     private object Solve(World world, List<Direction> directions)
     {
