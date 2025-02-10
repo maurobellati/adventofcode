@@ -13,7 +13,7 @@ public class Y2024Day16 : Solver
 
     public object PartTwo(List<string> input) => GetBestSpots(GridFactory.Create(input));
 
-    private static object GetBestSpots(Grid<char> grid)
+    private static int GetBestSpots(Grid<char> grid)
     {
         var goal = Goal(grid);
         var dijkstra = RunDijkstra(grid, Start(grid), goal);
@@ -43,7 +43,7 @@ public class Y2024Day16 : Solver
 
     private static int GetLowerCostAt(Costs costs, Cell goal) => costs.Where(kv => kv.Key.Cell == goal).Min(kv => kv.Value);
 
-    private static object GetLowestScore(Grid<char> grid)
+    private static int GetLowestScore(Grid<char> grid)
     {
         var dijkstra = RunDijkstra(grid, Start(grid), Goal(grid));
         return GetLowerCostAt(dijkstra.Costs, Goal(grid));

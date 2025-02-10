@@ -4,7 +4,7 @@ using Tool;
 
 public abstract class SolverTest<T> where T : Solver
 {
-    private static Solver CreateInstance() => (Activator.CreateInstance(typeof(T)) as Solver)!;
+    private static Solver CreateInstance() => Activator.CreateInstance<T>();
 
     private static void PartTest(IEnumerable<TestCase> testCases, int part)
     {

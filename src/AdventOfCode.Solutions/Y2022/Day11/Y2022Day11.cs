@@ -38,7 +38,7 @@ public class Y2022Day11 : Solver
         }
     }
 
-    private static object Solve(List<string> input, int rounds, int factor)
+    private static long Solve(List<string> input, int rounds, int factor)
     {
         var monkeys = input.Split(string.IsNullOrEmpty).Select(ParseMonkey).ToList();
         var monkeyBuffers = monkeys.ToDictionary(it => it.Id, it => new Queue<long>(it.StartingItems));

@@ -71,7 +71,7 @@ public class Y2024Day15 : Solver
             .Select(cell => (cell.Row * 100) + cell.Col)
             .Sum();
 
-    private object Solve(World world, List<Direction> directions)
+    private long Solve(World world, List<Direction> directions)
     {
         // Console.WriteLine("Start:");
         // PrettyPrint(world);

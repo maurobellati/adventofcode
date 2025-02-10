@@ -8,7 +8,7 @@ public class Y2024Day17 : Solver
 
     public object PartTwo(List<string> input) => FindQuine(ParseComputer(input), Instructions(input));
 
-    private static object FindQuine(Computer computer, List<int> instructions)
+    private static long FindQuine(Computer computer, List<int> instructions)
     {
         var correctDigits = 0;
         var solution = 0L;

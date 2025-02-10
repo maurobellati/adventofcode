@@ -38,7 +38,7 @@ public class Y2024Day11 : Solver
         return result;
     }
 
-    private static object CountTotalStonesAfterNBlinks(List<string> input, int blinks) =>
+    private static long CountTotalStonesAfterNBlinks(List<string> input, int blinks) =>
         Enumerable.Range(0, blinks)
             .Aggregate(InitialStones(input), (current, _) => ComputeNewStones(current))
             .Values

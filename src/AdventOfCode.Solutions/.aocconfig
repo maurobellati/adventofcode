@@ -2,4 +2,5 @@
   "ClassName": "Y{Year}Day{Day}",
   "ClassPath": "Y{Year}/Day{Day}",
   "NamespaceName": "AdventOfCode.Y{Year}.Day{Day}",
+  "Session": ""
 }

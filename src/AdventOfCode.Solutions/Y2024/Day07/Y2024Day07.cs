@@ -32,7 +32,7 @@ public class Y2024Day07 : Solver
         return result;
     }
 
-    private static object GetTotalCalibration(List<string> input, List<string> allowedOperations) =>
+    private static long GetTotalCalibration(List<string> input, List<string> allowedOperations) =>
         input.Select(ParseEquation)
             .Where(it => IsSolvable(it, allowedOperations))
             .Select(it => it.Result)

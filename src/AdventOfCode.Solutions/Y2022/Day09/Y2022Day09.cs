@@ -34,7 +34,7 @@ public class Y2022Day09 : Solver
         };
     }
 
-    private static object Solve(List<string> input, int count)
+    private static int Solve(List<string> input, int count)
     {
         var body = Enumerable.Range(0, count).Select(_ => new PathStep(Cell.Origin, Direction.E)).ToList();
         HashSet<PathStep> tailTrace = [];

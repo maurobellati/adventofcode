@@ -24,7 +24,7 @@ public class Y2024Day08 : Solver
         }
     }
 
-    private static object Solve(List<string> input, Func<Pair<Cell>, Box, IEnumerable<Cell>> antinodesGenerator)
+    private static int Solve(List<string> input, Func<Pair<Cell>, Box, IEnumerable<Cell>> antinodesGenerator)
     {
         var grid = GridFactory.Create(input);
         return grid.Entries

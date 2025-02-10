@@ -27,7 +27,7 @@ public class Y2024Day10 : Solver
 
     private static int GetRatings(Grid<int> grid, Cell cell) => GetAllPeeks(grid, cell).Count();
 
-    private static object Solve(List<string> input, Func<Grid<int>, Cell, int> counter)
+    private static int Solve(List<string> input, Func<Grid<int>, Cell, int> counter)
     {
         var grid = GridFactory.Create(input, @char => @char - '0');
         return grid.Entries.Where(entry => entry.Value == TrailheadValue)

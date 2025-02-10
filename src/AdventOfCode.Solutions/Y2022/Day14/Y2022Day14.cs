@@ -46,7 +46,7 @@ public class Y2022Day14 : Solver
             .Slide(2)
             .SelectMany(pair => GetBricks(pair[0], pair[1]));
 
-    private class Sandbox(ICollection<Cell> walls)
+    private sealed class Sandbox(ICollection<Cell> walls)
     {
         private readonly int floor = walls.Max(cell => cell.Row) + 2;
         private readonly HashSet<Cell> walls = walls.ToHashSet();
