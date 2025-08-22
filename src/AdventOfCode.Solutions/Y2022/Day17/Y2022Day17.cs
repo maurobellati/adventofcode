@@ -6,7 +6,9 @@ public class Y2022Day17 : Solver
 {
     public object PartOne(List<string> input)
     {
-        var cave = new Cave(input.First());
+        var jetPatterns = input.First();
+        // Console.WriteLine($"Jet Patterns count: {jetPatterns.Length}");
+        var cave = new Cave(jetPatterns);
         for (var i = 0; i < 2022; i++)
         {
             cave.DropRock();
@@ -15,7 +17,50 @@ public class Y2022Day17 : Solver
         return cave.TowerHeight;
     }
 
-    public object PartTwo(List<string> input) => 0;
+    public object PartTwo(List<string> input)
+    {
+        var jetPatterns = input.First();
+        // Console.WriteLine($"Jet Patterns count: {jetPatterns.Length}");
+        var cave = new Cave(jetPatterns);
+
+        // Dictionary<(int RockIndex, int JetPatternIndex), int> stateToTowerHeight = [];
+
+        List<int> towerHeights = [0];
+        List<(int RockIndex, int JetPatternIndex)> states = [(0,0)];
+        var targetRockCount = 1000000000000;
+        for (var i = 0L; i < targetRockCount; i++)
+        {
+            cave.DropRock();
+
+
+            var currentState = (cave.CurrentRockIndex, cave.JetPatternIndex);
+            if (states.Contains(currentState))
+            {
+                break;
+            }
+
+            towerHeights.Add(cave.TowerHeight);
+            states.Add(currentState);
+        }
+
+        var cycleStart = states.IndexOf((cave.CurrentRockIndex, cave.JetPatternIndex));
+        var cycleLength = states.Count - cycleStart;
+        var cycleStartHeight = towerHeights[cycleStart];
+
+        var cycleHeight = cave.TowerHeight - cycleStartHeight;
+
+        var remainingRockCount = targetRockCount - cycleStart;
+
+        var cyclesCount = remainingRockCount / cycleLength;
+
+        var leftoverRockCount = (int)(remainingRockCount % cycleLength);
+
+        var skippedCyclesHeight = cyclesCount * cycleHeight;
+        var remainingCyclesHeight = towerHeights[cycleStart + leftoverRockCount] - cycleStartHeight;
+
+        var result = cycleStartHeight + skippedCyclesHeight + remainingCyclesHeight;
+        return result;
+    }
 
     private sealed record Rock(int Height, List<Cell> Cells);
 
@@ -35,10 +80,14 @@ public class Y2022Day17 : Solver
         ];
 
         private Cell currentRockPosition = Cell.Origin;
-        private int jetPatternIndex;
-        private int rockCount;
 
-        private Rock CurrentRock => rocks[rockCount % rocks.Count];
+        private Rock CurrentRock => rocks[CurrentRockIndex];
+
+        public int CurrentRockIndex => RockCount % rocks.Count;
+
+        public int JetPatternIndex { get; private set; }
+
+        public int RockCount { get; private set; }
 
         public int TowerHeight { get; private set; }
 
@@ -67,6 +116,11 @@ public class Y2022Day17 : Solver
         {
             InitRock();
 
+            if (JetPatternIndex == 0)
+            {
+                // Console.WriteLine($"### Starting rock {RockCount:D5}. Jet index: {JetPatternIndex}");
+            }
+
             // Console.WriteLine("\n### A new rock begins falling:");
             PrettyPrint();
             while (true)
@@ -86,8 +140,14 @@ public class Y2022Day17 : Solver
             }
 
             PrettyPrint();
-            // Console.WriteLine("### The rock has come to rest");
-            rockCount++;
+
+            var rockIndex = rocks.IndexOf(CurrentRock);
+            if (Math.Abs(JetPatternIndex - jetPatterns.Length) < 5)
+            {
+                // Console.WriteLine($"### Rock {RockCount:D5} ({rockIndex}) done. Jet index: {JetPatternIndex}");
+            }
+
+            RockCount++;
         }
 
         private bool CanMoveTo(Cell rockPosition) =>
@@ -106,6 +166,13 @@ public class Y2022Day17 : Solver
 
             TowerHeight = Math.Max(TowerHeight, currentRockPosition.Row + 1);
             // Console.WriteLine($"Updated Tower Height: {TowerHeight}");
+        }
+
+        private Direction GetNextDir()
+        {
+            var dir = jetPatterns[JetPatternIndex] == '>' ? Direction.E : Direction.W;
+            JetPatternIndex = (JetPatternIndex + 1) % jetPatterns.Length;
+            return dir;
         }
 
         private void InitRock()
@@ -142,16 +209,14 @@ public class Y2022Day17 : Solver
 
         private bool TryMoveHorizontally() => TryMoveTo(currentRockPosition.Move(GetNextDir()));
 
-        private Direction GetNextDir() => jetPatterns[jetPatternIndex++ % jetPatterns.Length] == '>' ? Direction.E : Direction.W;
-
-        private bool TryMoveTo(Cell nextRockPosition)
+        private bool TryMoveTo(Cell position)
         {
-            if (!CanMoveTo(nextRockPosition))
+            if (!CanMoveTo(position))
             {
                 return false;
             }
 
-            currentRockPosition = nextRockPosition;
+            currentRockPosition = position;
             return true;
         }
     }
