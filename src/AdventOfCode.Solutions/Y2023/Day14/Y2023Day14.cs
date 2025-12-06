@@ -54,7 +54,9 @@ public class Y2023Day14 : Solver
             .Select(it => platform.RowCount - it.Row)
             .Sum();
 
+#pragma warning disable CA1036 //Item should define operator(s) '==, !=, <, <=, >, >='
     public class Item : IComparable<Item>
+#pragma warning restore CA1036
     {
         public int Col { get; set; }
 
