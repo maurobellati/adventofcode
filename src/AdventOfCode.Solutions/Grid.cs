@@ -32,6 +32,14 @@ public static class GridFactory
 
     public static Grid<T> Create<T>(IEnumerable<IEnumerable<T>> items) => new(items);
 
+    public static Grid<T> Create<T>(int rowCount, int columnCount, Func<int, int, T> valueGenerator) =>
+        new(
+            Enumerable.Range(0, rowCount)
+                .Select(
+                    row => Enumerable.Range(0, columnCount).Select(column => valueGenerator(row, column))
+                )
+        );
+
     public static Grid<T> Empty<T>(int rowCount, int columnCount, T value) =>
         new(Enumerable.Range(0, rowCount).Select(_ => Enumerable.Repeat(value, columnCount)));
 }

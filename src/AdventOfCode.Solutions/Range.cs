@@ -2,6 +2,10 @@ namespace AdventOfCode;
 
 public record Range(long From, long To)
 {
+    public long End => To;
+
+    public long Start => From;
+
     public static Range FromStartAndLength(long start, long length) => new(start, start + length - 1);
 
     public override string ToString() => $"[{From}, {To}]";
@@ -26,6 +30,31 @@ public static class RangeExtensions
     /// </summary>
     public static Range Intersect(this Range range, Range other) =>
         new(Math.Max(range.From, other.From), Math.Min(range.To, other.To));
+
+    /// <summary>
+    ///     Return a new range that is the merge of the two ranges if they overlap.
+    ///     It throws if they do not overlap.
+    /// </summary>
+    /// <returns></returns>
+    public static Range Merge(this Range range, Range other)
+    {
+        if (range.Includes(other))
+        {
+            return range;
+        }
+
+        if (other.Includes(range))
+        {
+            return other;
+        }
+
+        if (range.Overlaps(other))
+        {
+            return new(Math.Min(range.From, other.From), Math.Max(range.To, other.To));
+        }
+
+        throw new InvalidOperationException("Ranges do not overlap.");
+    }
 
     /// <summary>
     ///     Returns true if the two ranges overlap each other in at least one value
