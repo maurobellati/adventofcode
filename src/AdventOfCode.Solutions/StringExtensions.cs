@@ -109,9 +109,10 @@ public static partial class StringExtensions
     public static string? TrimToNull(this string input) =>
         string.IsNullOrWhiteSpace(input) ? null : input;
 
-    public static string[] Words(this string input) => input.Words(StringSplitOptions.RemoveEmptyEntries);
+    public static IEnumerable<string> Words(this string input) => EmptySpace().Split(input).Select(s => s.Trim()).Where(s => s.IsNotBlank());
 
-    public static string[] Words(this string input, StringSplitOptions options) => input.Split(' ', options);
+    [GeneratedRegex(@"\s+", RegexOptions.Compiled)]
+    private static partial Regex EmptySpace();
 
     [GeneratedRegex("-?\\d+", RegexOptions.Compiled)]
     private static partial Regex NumberRegex();
